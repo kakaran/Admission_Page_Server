@@ -1,4 +1,13 @@
 const Form = require("../Models/Form");
+const User = require("../Models/User")
+
+const cloudinary = require("cloudinary").v2;
+
+cloudinary.config({
+    cloud_name: process.env.cloud_name,
+    api_key: process.env.api_key,
+    api_secret: process.env.api_secret,
+});
 
 const CloudinaryImageUploder = async (image) => {
     const CloudinaryResponse = await cloudinary.uploader.upload(image.path, {
@@ -13,7 +22,7 @@ const FormAdd = async (req, res) => {
         const { Email, CETRank, CETRollNo, IPUApplicationNo, NameStudent, StudentContacatNo, StudentAdharCardNo, StudentEmailId, DOB, FatherName, FatherOccupation, FatherEmailId, MotherName, MotherContactNo, MotherOccupation, MotherEmail, AdmissionCategory, AreaOfResidence, Gender, PermanentAddress, CorrespondenceAddress, Religion, Nationality, TenthPercentage, TwelthPercentage, } = req.fields;
 
         const { AdmitCardCopy, ProofOfDateOfBirthCopy, CETRollNoCopy, TenthCopy, TwelthCopy, ProofOfAddressCopy, ProofOfReservedCopy, StudentImage } = req.files;
-
+        const { _id } = req.user
 
         if (!NameStudent || !CETRank || !Email || !CETRollNo || !IPUApplicationNo || !AdmitCardCopy || !StudentContacatNo || !!StudentAdharCardNo || !StudentEmailId || !DOB || !FatherName || !FatherOccupation || !MotherName || !MotherContactNo || !MotherOccupation || !AdmissionCategory || !AreaOfResidence || !Gender || !PermanentAddress || !CorrespondenceAddress || !Religion || !Nationality || !TenthPercentage || !TwelthPercentage || !StudentImage || !ProofOfDateOfBirthCopy || !CETRollNoCopy || !TenthCopy || !TwelthCopy || !ProofOfAddressCopy || !ProofOfReservedCopy) {
             return res.status(500).send({
@@ -61,9 +70,13 @@ const FormAdd = async (req, res) => {
             .status(500)
             .send({ message: "Form user allready submitted", status: false });
 
-        await new Form({
+        const Formcreated = await new Form({
             Email, CETRank, CETRollNo, IPUApplicationNo, AdmitCardCopy: await CloudinaryImageUploder(AdmitCardCopy), NameStudent, StudentContacatNo, StudentAdharCardNo, StudentEmailId, DOB, FatherName, FatherOccupation, FatherEmailId, MotherName, MotherContactNo, MotherOccupation, MotherEmail, AdmissionCategory, AreaOfResidence, Gender, PermanentAddress, CorrespondenceAddress, Religion, Nationality, TenthPercentage, TwelthPercentage, StudentImage: await CloudinaryImageUploder(StudentImage), ProofOfDateOfBirthCopy: await CloudinaryImageUploder(ProofOfDateOfBirthCopy), CETRollNoCopy: await CloudinaryImageUploder(CETRollNoCopy), TenthCopy: await CloudinaryImageUploder(TenthCopy), TwelthCopy: await CloudinaryImageUploder(TwelthCopy), ProofOfAddressCopy: await CloudinaryImageUploder(ProofOfAddressCopy), ProofOfReservedCopy: await CloudinaryImageUploder(ProofOfReservedCopy)
         }).save();
+
+        await User.findByIdAndUpdate({ _id }, { FormId: Formcreated._id }, {
+            new: true,
+        })
 
         return res
             .status(200)

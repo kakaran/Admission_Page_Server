@@ -9,7 +9,6 @@ const FormSchema = mongoose.Schema({
     NameStudent: { type: String, required: true },
     StudentContacatNo: { type: Number, required: true },
     StudentAdharCardNo: { type: String, required: true },
-    StudentEmailId: { type: String, required: true },
     DOB: { type: String, required: true },
     FatherName: { type: String, required: true },
     FatherOccupation: { type: String, required: true },

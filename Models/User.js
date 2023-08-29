@@ -11,7 +11,10 @@ const UserSchema = mongoose.Schema({
     PhoneNo: { type: Number, required: true },
     Password: { type: String, required: true },
     Role: { type: String, required: true },
-    FormId : {}
+    FormId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Event"
+    }
 
 },
     {
