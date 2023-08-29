@@ -19,6 +19,7 @@ router.get("/StudentformDisplay", RoleCheck, StrudentFormDisplay)
 
 router.get("/authentication", RoleCheck, async (req, res) => {
   const Role = req.Role;
+  console.log(Role);
   return res.send(Role);
 });
 

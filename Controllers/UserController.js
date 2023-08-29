@@ -113,9 +113,7 @@ const LoginUser = async (req, res) => {
 
 const FormCheck = async (req, res) => {
     try {
-        // const { _id } = req.user;
-        console.log(req.user);
-        const statusCheck = await User.findById({ _id }, { FormId: 1 })
+        const statusCheck = await User.findById({ _id : req.user._id }, { FormId: 1 })
 
         if (statusCheck) return res.status(200).send({ message: "allredy Submiited", status: false })
         else return res.status(200).send({ message: "Form not created ", status: true })
