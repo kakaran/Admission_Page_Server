@@ -8,6 +8,7 @@ const dbconect = require("./Config/dbconfig");
 const Router = require("./Routes/Routes");
 const PORT = process.env.PORT || 5000;
 
+
 dbconect();
 
 app.use(express.json({ limit: "100mb" }));
@@ -17,9 +18,9 @@ app.use(morgan("dev"));
 app.use("/api", Router);
 
 app.listen(PORT, function (error) {
-    if (error) {
-      console.log("Server Not Work");
-    }
-  
-    console.log("Server start Successfully Port no is : " + PORT);
-  });
+  if (error) {
+    console.log("Server Not Work");
+  }
+
+  console.log("Server start Successfully Port no is : " + PORT);
+});

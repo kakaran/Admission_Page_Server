@@ -73,6 +73,25 @@ const FormAdd = async (req, res) => {
     }
 }
 
+const FormDisplay = async (req, res) => {
+    try {
+        const FormData = await Form.find();
+
+        if (FormData) return res.status(200).send({ message: "Data Send", status: true, FormData })
+        else return res.status(401).send({ message: "Data not found", status: false, })
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+const StrudentFormDisplay = async (req, res) => {
+    try {
+        const { _id } = req.user;
+    } catch (err) {
+        console.log(err);
+    }
+}
 module.exports = {
-    FormAdd
+    FormAdd,
+    FormDisplay
 }
