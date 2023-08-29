@@ -23,7 +23,7 @@ const CreateAccount = async (req, res) => {
             });
         }
 
-    
+
         if (
             Email.match(
                 /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/
@@ -111,9 +111,23 @@ const LoginUser = async (req, res) => {
 };
 
 
+const FormCheck = async (req, res) => {
+    try {
+        const { _id } = req.user;
+
+        const statusCheck = await User.findById({ _id }, { FormId: 1 })
+
+        if (statusCheck) return res.status(200).send({ message: "allredy Submiited", status: false })
+        else return res.status(200).send({ message: "Form not created ", status: true })
+    } catch (error) {
+        console.log(error);
+    }
+}
+
 
 
 module.exports = {
     CreateAccount,
-    LoginUser
+    LoginUser,
+    FormCheck
 }

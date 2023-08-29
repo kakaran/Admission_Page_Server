@@ -100,13 +100,21 @@ const FormDisplay = async (req, res) => {
 const StrudentFormDisplay = async (req, res) => {
     try {
         const { _id } = req.user;
+
+        const DataGet = await User.findById({ _id }).populate("FormId", "Email NameStudent StudentContacatNo DOB FatherName MotherName createdAt")
+
+        if (DataGet) return res.status(200).send({ message: "Data send", status: true, DataGet })
+        else return res.status(401).send({ message: "Data not get", status: false })
     } catch (err) {
         console.log(err);
     }
 }
 
 
+
+
 module.exports = {
     FormAdd,
-    FormDisplay
+    FormDisplay,
+    StrudentFormDisplay
 }

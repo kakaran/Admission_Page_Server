@@ -13,7 +13,7 @@ const UserSchema = mongoose.Schema({
     Role: { type: String, required: true },
     FormId: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "Event"
+        ref: "Form"
     }
 
 },
