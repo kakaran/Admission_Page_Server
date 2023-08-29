@@ -90,8 +90,8 @@ const FormDisplay = async (req, res) => {
     try {
         const FormData = await Form.find();
 
-        if (FormData) return res.status(200).send({ message: "Form All ready Summited ", status: true, FormData })
-        else return res.status(401).send({ message: "Form Not subimmited", status: false, })
+        if (FormData) return res.status(200).send({ message: "Data send", status: true, FormData })
+        else return res.status(401).send({ message: "Data Not found", status: false, })
     } catch (error) {
         console.log(error);
     }
@@ -101,7 +101,7 @@ const StrudentFormDisplay = async (req, res) => {
     try {
         const { _id } = req.user;
 
-        const DataGet = await User.findById({ _id }).populate("FormId", "Email NameStudent StudentContacatNo DOB FatherName MotherName createdAt")
+        const DataGet = await User.findById({ _id }, { _id: 1, FormId: 1 }).populate("FormId", "Email NameStudent StudentContacatNo DOB FatherName MotherName createdAt")
 
         if (DataGet) return res.status(200).send({ message: "Data send", status: true, DataGet })
         else return res.status(401).send({ message: "Data not get", status: false })
