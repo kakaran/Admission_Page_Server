@@ -90,8 +90,8 @@ const FormDisplay = async (req, res) => {
     try {
         const FormData = await Form.find();
 
-        if (FormData) return res.status(200).send({ message: "Data Send", status: true, FormData })
-        else return res.status(401).send({ message: "Data not found", status: false, })
+        if (FormData) return res.status(200).send({ message: "Form All ready Summited ", status: true, FormData })
+        else return res.status(401).send({ message: "Form Not subimmited", status: false, })
     } catch (error) {
         console.log(error);
     }
