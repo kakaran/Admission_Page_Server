@@ -14,7 +14,7 @@ router.get("/FormCheck", RoleCheck, FormCheck)
 //Form Routes
 router.post("/formCreated", requireSignIn, formidable(), FormAdd);
 router.get("/FormDispaly", requireSignInAdminCheck, FormDisplay)
-router.get("StudentformDisplay", RoleCheck, StrudentFormDisplay)
+router.get("/StudentformDisplay", RoleCheck, StrudentFormDisplay)
 
 
 router.get("/authentication", RoleCheck, async (req, res) => {

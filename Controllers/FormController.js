@@ -12,7 +12,7 @@ cloudinary.config({
 const CloudinaryImageUploder = async (image) => {
     const CloudinaryResponse = await cloudinary.uploader.upload(image.path, {
         resource_type: "auto",
-        format: "jpg",
+        // format: "jpg",
     });
     return CloudinaryResponse.url;
 }
@@ -24,12 +24,12 @@ const FormAdd = async (req, res) => {
         const { AdmitCardCopy, ProofOfDateOfBirthCopy, CETRollNoCopy, TenthCopy, TwelthCopy, ProofOfAddressCopy, ProofOfReservedCopy, StudentImage } = req.files;
         const { _id } = req.user
 
-        if (!NameStudent || !CETRank || !Email || !CETRollNo || !IPUApplicationNo || !AdmitCardCopy || !StudentContacatNo || !!StudentAdharCardNo || !StudentEmailId || !DOB || !FatherName || !FatherOccupation || !MotherName || !MotherContactNo || !MotherOccupation || !AdmissionCategory || !AreaOfResidence || !Gender || !PermanentAddress || !CorrespondenceAddress || !Religion || !Nationality || !TenthPercentage || !TwelthPercentage || !StudentImage || !ProofOfDateOfBirthCopy || !CETRollNoCopy || !TenthCopy || !TwelthCopy || !ProofOfAddressCopy || !ProofOfReservedCopy) {
-            return res.status(500).send({
-                message: "Kindly please fill all information...",
-                status: false,
-            });
-        }
+        // if (!NameStudent || !CETRank || !Email || !CETRollNo || !IPUApplicationNo || !AdmitCardCopy || !StudentContacatNo || !!StudentAdharCardNo || !StudentEmailId || !DOB || !FatherName || !FatherOccupation || !MotherName || !MotherContactNo || !MotherOccupation || !AdmissionCategory || !AreaOfResidence || !Gender || !PermanentAddress || !CorrespondenceAddress || !Religion || !Nationality || !TenthPercentage || !TwelthPercentage || !StudentImage || !ProofOfDateOfBirthCopy || !CETRollNoCopy || !TenthCopy || !TwelthCopy || !ProofOfAddressCopy || !ProofOfReservedCopy) {
+        //     return res.status(500).send({
+        //         message: "Kindly please fill all information...",
+        //         status: false,
+        //     });
+        // }
 
         if (AdmitCardCopy.size > 1000000) return res
             .status(500)
