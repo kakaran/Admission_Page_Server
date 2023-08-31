@@ -110,9 +110,9 @@ const LoginUser = async (req, res) => {
 
 const FormCheck = async (req, res) => {
   try {
-    const statusCheck = await User.find({ _id: req.user._id });
+    const statusCheck = await User.findOne({ _id: req.user._id });
 
-    if (statusCheck.formId)
+    if (statusCheck.FormId)
       return res
         .status(200)
         .send({ message: "allredy Submiited", status: false });
