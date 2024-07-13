@@ -2,7 +2,7 @@ const express = require("express");
 const router = express()
 const { RoleCheck, requireSignIn, requireSignInAdminCheck } = require("../Middlewares/authentication")
 const { CreateAccount, LoginUser, FormCheck } = require("../Controllers/UserController");
-const { FormAdd, FormDisplay, StrudentFormDisplay } = require("../Controllers/FormController");
+const { FormAdd, FormDisplay, StrudentFormDisplay, UserDataConvertInExcel } = require("../Controllers/FormController");
 const formidable = require("express-formidable");
 
 
@@ -15,6 +15,7 @@ router.get("/FormCheck", RoleCheck, FormCheck)
 router.post("/formCreated", requireSignIn, formidable(), FormAdd);
 router.get("/FormDispaly", requireSignInAdminCheck, FormDisplay)
 router.get("/StudentformDisplay", RoleCheck, StrudentFormDisplay)
+router.get("/xlsxFormFile", UserDataConvertInExcel)
 
 
 router.get("/authentication", RoleCheck, async (req, res) => {

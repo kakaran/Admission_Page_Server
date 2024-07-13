@@ -1,5 +1,6 @@
 const Form = require("../Models/Form");
 const User = require("../Models/User");
+// const XLSX = require('xlsx'); // Import the xlsx library
 
 const cloudinary = require("cloudinary").v2;
 
@@ -67,60 +68,46 @@ const FormAdd = async (req, res) => {
     // }
 
     if (AdmitCardCopy.size > 1000000)
-      return res
-        .status(500)
-        .send({
-          message: "Admit card image size larger then 1Mb",
-          status: false,
-        });
+      return res.status(500).send({
+        message: "Admit card image size larger then 1Mb",
+        status: false,
+      });
 
     if (ProofOfDateOfBirthCopy.size > 1000000)
-      return res
-        .status(500)
-        .send({
-          message: "Proof of Date of Birth image size larger then 1Mb",
-          status: false,
-        });
+      return res.status(500).send({
+        message: "Proof of Date of Birth image size larger then 1Mb",
+        status: false,
+      });
 
     if (CETRollNoCopy.size > 1000000)
-      return res
-        .status(500)
-        .send({
-          message: "CET roll no image size larger then 1Mb",
-          status: false,
-        });
+      return res.status(500).send({
+        message: "CET roll no image size larger then 1Mb",
+        status: false,
+      });
 
     if (TenthCopy.size > 1000000)
-      return res
-        .status(500)
-        .send({
-          message: "Tenth Marksheet image size larger then 1Mb",
-          status: false,
-        });
+      return res.status(500).send({
+        message: "Tenth Marksheet image size larger then 1Mb",
+        status: false,
+      });
 
     if (TwelthCopy.size > 1000000)
-      return res
-        .status(500)
-        .send({
-          message: "Twelth Marksheet image size larger then 1Mb",
-          status: false,
-        });
+      return res.status(500).send({
+        message: "Twelth Marksheet image size larger then 1Mb",
+        status: false,
+      });
 
     if (ProofOfAddressCopy.size > 1000000)
-      return res
-        .status(500)
-        .send({
-          message: "Proof of address image size larger then 1Mb",
-          status: false,
-        });
+      return res.status(500).send({
+        message: "Proof of address image size larger then 1Mb",
+        status: false,
+      });
 
     if (ProofOfReservedCopy.size > 1000000)
-      return res
-        .status(500)
-        .send({
-          message: "Proof Of ReservedCopy category image size larger then 1Mb",
-          status: false,
-        });
+      return res.status(500).send({
+        message: "Proof Of ReservedCopy category image size larger then 1Mb",
+        status: false,
+      });
 
     if (StudentImage.size > 1000000)
       return res
@@ -226,8 +213,18 @@ const StrudentFormDisplay = async (req, res) => {
   }
 };
 
+async function UserDataConvertInExcel(req, res) {
+  try {
+    const userData = await Form.find({});
+    return res.send(userData)
+  } catch (error) {
+    return res.status(500).send(error);
+  }
+}
+
 module.exports = {
   FormAdd,
   FormDisplay,
   StrudentFormDisplay,
+  UserDataConvertInExcel,
 };

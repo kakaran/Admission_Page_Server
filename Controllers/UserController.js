@@ -50,7 +50,7 @@ const CreateAccount = async (req, res) => {
 
     const hashPassword = await HashPassword(Password);
     // console.log(hashPassword);
-    await new User({
+    const user = await new User({
       FName,
       LName,
       Email: Email.toLowerCase(),
@@ -59,9 +59,13 @@ const CreateAccount = async (req, res) => {
       Role: "Student",
     }).save();
 
+    const token = await JWT.sign({ _id: user._id }, process.env.JWT_SECRET, {
+      expiresIn: "7d",
+    });
+
     return res
       .status(200)
-      .send({ message: "Account Successfully Created", status: true });
+      .send({ message: "Account Successfully Created", status: true, token });
   } catch (error) {
     console.log(error);
   }
