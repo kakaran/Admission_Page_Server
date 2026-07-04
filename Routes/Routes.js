@@ -2,7 +2,7 @@ const express = require("express");
 const router = express()
 const { RoleCheck, requireSignIn, requireSignInAdminCheck } = require("../Middlewares/authentication")
 const { CreateAccount, LoginUser, FormCheck, RecordFormChoice } = require("../Controllers/UserController");
-const { FormAdd, FormDisplay, StrudentFormDisplay, UserDataConvertInExcel, GetStudentApplications } = require("../Controllers/FormController");
+const { FormAdd, FormDisplay, StrudentFormDisplay, UserDataConvertInExcel, GetStudentApplications, GetStudentApplicationById } = require("../Controllers/FormController");
 const formidable = require("express-formidable");
 
 
@@ -16,6 +16,7 @@ router.post("/formChoice", requireSignIn, RecordFormChoice)
 router.post("/formCreated", requireSignIn, formidable(), FormAdd);
 router.get("/FormDispaly", requireSignInAdminCheck, FormDisplay)
 router.get("/StudentApplications", requireSignInAdminCheck, GetStudentApplications)
+router.get("/StudentApplication/:id", requireSignInAdminCheck, GetStudentApplicationById)
 router.get("/StudentformDisplay", RoleCheck, StrudentFormDisplay)
 router.get("/xlsxFormFile", UserDataConvertInExcel)
 

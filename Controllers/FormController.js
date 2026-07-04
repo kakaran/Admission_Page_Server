@@ -284,10 +284,28 @@ async function UserDataConvertInExcel(req, res) {
   }
 }
 
+async function GetStudentApplicationById(req, res) {
+  try {
+    const { id } = req.params;
+    const student = await User.findOne({ _id: id, Role: "Student" })
+      .select("FName LName Email PhoneNo SubmissionMethod SubmissionMethodAt FormId createdAt")
+      .populate("FormId");
+
+    if (!student)
+      return res.status(404).send({ status: false, message: "Student not found" });
+
+    return res.status(200).send({ status: true, student });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).send({ status: false, message: "Something went wrong" });
+  }
+}
+
 module.exports = {
   FormAdd,
   FormDisplay,
   StrudentFormDisplay,
   UserDataConvertInExcel,
   GetStudentApplications,
+  GetStudentApplicationById,
 };
