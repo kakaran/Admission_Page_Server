@@ -1,6 +1,7 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
-const FormSchema = mongoose.Schema({
+const FormSchema = mongoose.Schema(
+  {
     Email: { type: String, required: true, unique: true },
     CETRank: { type: String, required: true },
     CETRollNo: { type: Number, required: true },
@@ -12,12 +13,25 @@ const FormSchema = mongoose.Schema({
     DOB: { type: String, required: true },
     FatherName: { type: String, required: true },
     FatherOccupation: { type: String, required: true },
-    FatherEmailId: { type: String, },
+    FatherEmailId: { type: String },
     MotherName: { type: String, required: true },
     MotherContactNo: { type: Number, required: true },
     MotherOccupation: { type: String, required: true },
-    MotherEmail: { type: String, },
-    AdmissionCategory: { type: String, required: true, enum: ["General", "General (Out Side Delhi)", "SC", "SC (Out Side Delhi)", "ST", "OBC", "PH", 'Other'] },
+    MotherEmail: { type: String },
+    AdmissionCategory: {
+      type: String,
+      required: true,
+      enum: [
+        "General",
+        "General (Out Side Delhi)",
+        "SC",
+        "SC (Out Side Delhi)",
+        "ST",
+        "OBC",
+        "PH",
+        "Other",
+      ],
+    },
     AreaOfResidence: { type: String, required: true, enum: ["Rural", "Urban"] },
     Gender: { type: String, required: true, enum: ["Male", "Female"] },
     PermanentAddress: { type: String, required: true },
@@ -32,13 +46,13 @@ const FormSchema = mongoose.Schema({
     TenthCopy: { type: String, required: true },
     TwelthCopy: { type: String, required: true },
     ProofOfAddressCopy: { type: String, required: true },
-    ProofOfReservedCopy: { type: String }
-
-},
-    {
-        timestamps: true,
-    });
+    ProofOfReservedCopy: { type: String },
+  },
+  {
+    timestamps: true,
+  },
+);
 
 const Form = mongoose.model("Form", FormSchema);
 
-module.exports = Form
+module.exports = Form;

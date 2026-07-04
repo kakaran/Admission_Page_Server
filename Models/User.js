@@ -14,7 +14,9 @@ const UserSchema = mongoose.Schema({
     FormId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Form"
-    }
+    },
+    SubmissionMethod: { type: String, enum: ["Download", "EForm"] },
+    SubmissionMethodAt: { type: Date }
 
 },
     {

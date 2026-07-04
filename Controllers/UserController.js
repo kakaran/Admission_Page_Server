@@ -125,8 +125,35 @@ const FormCheck = async (req, res) => {
   }
 };
 
+const RecordFormChoice = async (req, res) => {
+  try {
+    const { _id } = req.user;
+    const { method } = req.body;
+
+    if (!["Download", "EForm"].includes(method))
+      return res
+        .status(400)
+        .send({ message: "Invalid submission method", status: false });
+
+    await User.findByIdAndUpdate(_id, {
+      SubmissionMethod: method,
+      SubmissionMethodAt: new Date(),
+    });
+
+    return res
+      .status(200)
+      .send({ message: "Choice recorded", status: true });
+  } catch (error) {
+    console.log(error);
+    return res
+      .status(500)
+      .send({ message: "Something went wrong", status: false });
+  }
+};
+
 module.exports = {
   CreateAccount,
   LoginUser,
   FormCheck,
+  RecordFormChoice,
 };

@@ -213,9 +213,71 @@ const StrudentFormDisplay = async (req, res) => {
   }
 };
 
+const STATUS_FILTERS = {
+  Submitted: { FormId: { $ne: null } },
+  Downloaded: { FormId: null, SubmissionMethod: "Download" },
+  "In Progress": { FormId: null, SubmissionMethod: "EForm" },
+  "Not Started": { FormId: null, SubmissionMethod: { $exists: false } },
+};
+
+async function GetStudentApplications(req, res) {
+  try {
+    const page = Math.max(parseInt(req.query.page) || 1, 1);
+    const limit = Math.max(parseInt(req.query.limit) || 10, 1);
+    const { status, search } = req.query;
+
+    const filter = { Role: "Student" };
+
+    if (status && STATUS_FILTERS[status]) {
+      Object.assign(filter, STATUS_FILTERS[status]);
+    }
+
+    if (search) {
+      const regex = new RegExp(search, "i");
+      filter.$or = [{ FName: regex }, { LName: regex }, { Email: regex }];
+    }
+
+    const total = await User.countDocuments(filter);
+    const students = await User.find(filter)
+      .select("FName LName Email PhoneNo SubmissionMethod SubmissionMethodAt FormId createdAt")
+      .populate("FormId", "NameStudent Email DOB StudentContacatNo AdmissionCategory")
+      .sort({ createdAt: -1 })
+      .skip((page - 1) * limit)
+      .limit(limit);
+
+    return res.status(200).send({
+      status: true,
+      students,
+      total,
+      page,
+      totalPages: Math.max(Math.ceil(total / limit), 1),
+    });
+  } catch (error) {
+    console.log(error);
+    return res
+      .status(500)
+      .send({ status: false, message: "Something went wrong" });
+  }
+}
+
 async function UserDataConvertInExcel(req, res) {
   try {
-    const userData = await Form.find({});
+    const { from, to } = req.query;
+    const filter = { Role: "Student" };
+
+    if (from || to) {
+      filter.SubmissionMethodAt = {};
+      if (from) filter.SubmissionMethodAt.$gte = new Date(from);
+      if (to) {
+        const toDate = new Date(to);
+        toDate.setHours(23, 59, 59, 999);
+        filter.SubmissionMethodAt.$lte = toDate;
+      }
+    }
+
+    const userData = await User.find(filter)
+      .select("FName LName Email PhoneNo SubmissionMethod SubmissionMethodAt FormId")
+      .populate("FormId");
     return res.send(userData)
   } catch (error) {
     return res.status(500).send(error);
@@ -227,4 +289,5 @@ module.exports = {
   FormDisplay,
   StrudentFormDisplay,
   UserDataConvertInExcel,
+  GetStudentApplications,
 };
