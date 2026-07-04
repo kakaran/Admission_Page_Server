@@ -103,7 +103,7 @@ const FormAdd = async (req, res) => {
         status: false,
       });
 
-    if (ProofOfReservedCopy.size > 1000000)
+    if (ProofOfReservedCopy && ProofOfReservedCopy.size > 1000000)
       return res.status(500).send({
         message: "Proof Of ReservedCopy category image size larger then 1Mb",
         status: false,
@@ -156,7 +156,9 @@ const FormAdd = async (req, res) => {
       TenthCopy: await CloudinaryImageUploder(TenthCopy),
       TwelthCopy: await CloudinaryImageUploder(TwelthCopy),
       ProofOfAddressCopy: await CloudinaryImageUploder(ProofOfAddressCopy),
-      ProofOfReservedCopy: await CloudinaryImageUploder(ProofOfReservedCopy),
+      ProofOfReservedCopy: ProofOfReservedCopy
+        ? await CloudinaryImageUploder(ProofOfReservedCopy)
+        : undefined,
     }).save();
 
     await User.findByIdAndUpdate(
@@ -276,7 +278,7 @@ async function UserDataConvertInExcel(req, res) {
     }
 
     const userData = await User.find(filter)
-      .select("FName LName Email PhoneNo SubmissionMethod SubmissionMethodAt FormId")
+      .select("FName LName Email PhoneNo SubmissionMethod SubmissionMethodAt FormId createdAt")
       .populate("FormId");
     return res.send(userData)
   } catch (error) {
