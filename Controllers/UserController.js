@@ -22,22 +22,18 @@ const CreateAccount = async (req, res) => {
       });
     }
 
-    if (
-      Email.match(
-        /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/
-      )
-    )
+    if (!Email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/))
       return res
-        .status(500)
+        .status(400)
         .send({ message: "Wrong email format", status: false });
 
     if (
-      Password.match(
-        / ^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/
+      !Password.match(
+        /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/
       )
     )
       return res
-        .status(500)
+        .status(400)
         .send({ message: "Wrong password format", status: false });
 
     const CheckEmail = await User.findOne({ Email: Email.toLowerCase() });
